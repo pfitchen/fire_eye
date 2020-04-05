@@ -1,0 +1,10 @@
+*.DS_Store
+venv/
+data/
+docs/
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.icloud
+*__pycache__

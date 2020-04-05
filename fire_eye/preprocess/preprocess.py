@@ -85,7 +85,7 @@ def add_to_dataset(set_dir, pos_dirname, neg_dirname):
 	print(f'Preprocessing positive images from {set_dir}')
 	pos_file_idx = get_highest_file_idx(True) + 1
 	idx = 0
-	for fname in tqdm(os.listdir(raw_pos_dir)):
+	for fname in tqdm(sorted(os.listdir(raw_pos_dir))):
 		if fname.endswith('.png') or fname.endswith('.jpg'):
 			new_img_fname = f'pos{pos_file_idx + idx}.png'
 			new_img = preprocess_img(os.path.join(raw_pos_dir, fname))
@@ -97,7 +97,7 @@ def add_to_dataset(set_dir, pos_dirname, neg_dirname):
 	print(f'Preprocessing negative images from {set_dir}')
 	neg_file_idx = get_highest_file_idx(False) + 1
 	idx = 0
-	for fname in tqdm(os.listdir(raw_neg_dir)):
+	for fname in tqdm(sorted(os.listdir(raw_neg_dir))):
 		if fname.endswith('.png') or fname.endswith('.jpg'):
 			new_img_fname = f'neg{neg_file_idx + idx}.png'
 			new_img = preprocess_img(os.path.join(raw_neg_dir, fname))

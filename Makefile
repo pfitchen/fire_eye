@@ -4,14 +4,14 @@ PIP = pip
 RM = rm
 
 
-# install the required third part packages
-init:
-	$(PIP) install -r requirements.txt
-
-
 # run the main module (effectively runs __main__.py)
 run:
 	$(PYTHON) -m fire_eye
+
+
+# install the required third part packages
+init:
+	$(PIP) install -r requirements.txt
 
 
 # -b option suppress print outputs

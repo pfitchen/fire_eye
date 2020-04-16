@@ -53,7 +53,8 @@ def preprocess_img(fpath):
 
 	raw_img = cv2.imread(fpath)
 	try:
-		img = cv2.resize(raw_img, IMG_SIZE)
+		rgb_img = cv2.cvtColor(raw_img, cv2.COLOR_BGR2RGB)
+		img = cv2.resize(rgb_img, IMG_SIZE)
 	except:
 		return None
 	return img

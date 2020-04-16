@@ -1,6 +1,8 @@
 import pandas as pd
 import os
-from fire_eye.preprocess.preprocess import DATA_DIR
+import cv2
+import numpy as np
+from fire_eye.preprocess.preprocess import DATA_DIR, POS_DIR, NEG_DIR
 
 
 TALLY_DIR = os.path.join(DATA_DIR, 'tallies')
@@ -57,8 +59,21 @@ def calc_statistics(df, colname):
 	return statistics
 
 
-def calc_mean_pixel_value():
-	pass
+def calc_pixel_value_statistics():
+	img_means = []
+	img_stds = []
+	fpaths = [os.path.join(POS_DIR, fname) for fname in os.listdir(POS_DIR)] +\
+			 [os.path.join(NEG_DIR, fname) for fname in os.listdir(NEG_DIR)]
+	for fpath in fpaths:
+		img = cv2.imread(fpath)
+		img_mean = img.mean(axis=(0,1)).reshape(-1, 1)
+		img_means.append(img_mean)
+		img_std = img.std(axis=(0,1)).reshape(-1, 1)
+		img_stds.append(img_std)
+	img_means= np.array(img_means).mean(axis=0)
+	img_stds= np.array(img_stds).mean(axis=0)
+	return img_means, img_stds
+
 
 
 def calc_mean_raw_img_dimensions():

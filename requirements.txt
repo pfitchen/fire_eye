@@ -1,4 +1,7 @@
+certifi==2020.4.5.1
+chardet==3.0.4
 cycler==0.10.0
+idna==2.9
 kiwisolver==1.2.0
 matplotlib==3.2.1
 numpy==1.18.2
@@ -8,9 +11,12 @@ Pillow==7.1.1
 pyparsing==2.4.6
 python-dateutil==2.8.1
 pytz==2019.3
+requests==2.23.0
 scipy==1.4.1
 seaborn==0.10.0
+selenium==3.141.0
 six==1.14.0
 torch==1.4.0
 torchvision==0.5.0
 tqdm==4.45.0
+urllib3==1.25.9

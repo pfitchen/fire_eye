@@ -19,6 +19,11 @@ test:
 	$(PYTHON) -m unittest discover -b
 
 
+# no -b option, so printf should work
+test-verbose:
+	$(PYTHON) -m unittest discover
+
+
 # finish up/fix... This only removes from top level
 clean:
 	$(RM) -rf *__pycache__

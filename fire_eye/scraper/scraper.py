@@ -78,8 +78,8 @@ class Scraper():
 	# enter a query to search on Google Images and download num_images to a 
 	# target directory. defaults to <cwd>/data/<query> if no directory is 
 	# specified. update webdriver
-	def scrape_google_images(self, query:str, download_path:str,
-							 num_images:int=1):
+	def scrape_google_images(self, num_images:int, query:str,
+							 download_path:str):
 		# helper function, scroll to bottom of page to load more images
 		def scroll_to_bottom():
 			script = 'window.scrollTo(0, document.body.scrollHeight);'
@@ -95,7 +95,7 @@ class Scraper():
 				img = cv2.imdecode(img, cv2.IMREAD_COLOR)
 				# temp_file = io.BytesIO(img_content)
 				# img = Image.open(temp_file).convert('RGB')
-				img_fname = f'{query}{img_count}.png'
+				img_fname = f'{query.replace(" ", "_")}_{img_count}.png'
 				img_path = os.path.join(download_path, img_fname)
 				cv2.imwrite(img_path, img)
 				# with open(img_path, 'wb') as f:
@@ -108,7 +108,8 @@ class Scraper():
 		if not os.path.isdir(download_path):
 			raise ValueError(f'{download_path} is not a valid path.')
 		download_path = os.path.join(download_path, f'{query}')
-		os.mkdir(download_path)
+		if not os.path.isdir(download_path):
+			os.mkdir(download_path)
 
 		# this is the same as search_google_images(), 
 		# but I want this fn to standalone.
@@ -157,6 +158,6 @@ class Scraper():
 if __name__ == '__main__':
 	download_path = os.path.join(os.path.getcwd(), 'data', 'test_scraper_data')
 	with Scraper(headless=True) as scrpr:
-		scrpr.scrape_google_images(query='Forest Fire', num_images=20)
-		scrpr.scrape_google_images(query='Forest', num_images=20)
+		scrpr.scrape_google_images(num_images=20, query='Forest Fire')
+		scrpr.scrape_google_images(num_images=20, query='Forest')
 

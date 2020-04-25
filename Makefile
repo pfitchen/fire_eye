@@ -25,6 +25,9 @@ test-verbose:
 
 
 # finish up/fix... This only removes from top level
+# remove __pycache__ stuff,
+# empty scraped data dir
+# empty preprocessed data dir
 clean:
 	$(RM) -rf *__pycache__
 

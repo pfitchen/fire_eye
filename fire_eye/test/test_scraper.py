@@ -48,7 +48,7 @@ class TestScraper(unittest.TestCase):
 
 		# check that code runs...
 		try:
-			self.scrpr.scrape_google_images(query=query, num_images=num_images,
+			self.scrpr.scrape_google_images(num_images=num_images, query=query,
 											download_path=download_path)
 		except Exception as e:
 			self.fail(f'An error occurred scraping Google Images... - {e}')

@@ -32,7 +32,6 @@ class Preprocessor():
 
 
 	# Preprocess all images in the lists of pos and neg paths.
-	# Previous preprocessed_path images are removed!
 	# Invalid paths are skipped, rather than throwing an error.
 	def preprocess(self, pos_paths:list=[], neg_paths:list=[]):
 		# helper function:
@@ -48,18 +47,21 @@ class Preprocessor():
 					if fname.endswith('png') or fname.endswith('jpg'):
 						img_paths.append(os.path.join(path, fname))
 
-			# preprocessed images are named <dest_dir>x.png 
+			# preprocessed images are named <dest_dir>_<src_dir>_x.png 
 			# where x is image count up to that point (index)
 			img_count = 0
-			fname_prefix = os.path.basename(os.path.normpath(dest_path))
+			dest_prefix = os.path.basename(os.path.normpath(dest_path))
 			for img_path in tqdm(img_paths):
 				try:
+					img_path = os.path.normpath(img_path)
+					src_prefix = os.path.basename(os.path.dirname(img_path))
+					src_prefix = src_prefix.replace(" ", "_")
 					img = cv2.imread(img_path)
 					# don't resize if img_size is specified as None
 					if self.img_size is not None:
 						img = cv2.resize(img, self.img_size)
 					# save image to appropriate preprocessed dir
-					img_fname = f'{fname_prefix}{img_count}.png'
+					img_fname = f'{dest_prefix}_{src_prefix}_{img_count}.png'
 					cv2.imwrite(os.path.join(dest_path, img_fname), img)
 					img_count += 1
 				except:
@@ -67,13 +69,11 @@ class Preprocessor():
 					continue
 			return img_count
 
-		# first remove preprocessed data if it exists
-		if os.path.isdir(self.pos_path):
-			shutil.rmtree(self.pos_path)
-		if os.path.isdir(self.neg_path):
-			shutil.rmtree(self.neg_path)
-		os.mkdir(self.pos_path)
-		os.mkdir(self.neg_path)
+		# make pos and neg dirs if they don't exist
+		if not os.path.isdir(self.pos_path):
+			os.mkdir(self.pos_path)
+		if not os.path.isdir(self.neg_path):
+			os.mkdir(self.neg_path)
 
 		# could use image counts in a print statement if so desired...
 		num_pos_imgs = resize_and_copy(paths=pos_paths, dest_path=self.pos_path)

@@ -1,6 +1,7 @@
 # update with python3 or pip3, for example, if needed
 PYTHON = python
 PIP = pip
+FIND = find
 RM = rm
 
 
@@ -25,11 +26,13 @@ test-verbose:
 
 
 # finish up/fix... This only removes from top level
-# remove __pycache__ stuff,
+# remove __pycache__ stuff from fire_eye/,
 # empty scraped data dir
 # empty preprocessed data dir
 clean:
-	$(RM) -rf *__pycache__
+	$(FIND) fire_eye -name '*.pyc' -delete
+	$(RM) -rf ./data/scraped/*
+	$(RM) -rf ./data/preprocessed/*
 
 
 .PHONY: init run test clean

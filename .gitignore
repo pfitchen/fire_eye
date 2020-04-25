@@ -8,3 +8,4 @@ docs/
 *.jpeg
 *.icloud
 *__pycache__
+*.pyc

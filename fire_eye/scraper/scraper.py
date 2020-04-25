@@ -155,6 +155,7 @@ class Scraper():
 
 # scrape 100 Fire and NoFire images of a forest
 if __name__ == '__main__':
+	download_path = os.path.join(os.path.getcwd(), 'data', 'test_scraper_data')
 	with Scraper(headless=True) as scrpr:
 		scrpr.scrape_google_images(query='Forest Fire', num_images=20)
 		scrpr.scrape_google_images(query='Forest', num_images=20)

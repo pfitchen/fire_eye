@@ -1,8 +1,6 @@
-from fire_eye.scraper import Scraper
-from fire_eye.preprocessor import Preprocessor
-from fire_eye.classifier import Classifier
+from fire_eye.fire_eye import FireEye
 
 
 if __name__ == '__main__':
-	pass
+	print('Hello there')
 

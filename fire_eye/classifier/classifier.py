@@ -288,7 +288,15 @@ class Classifier():
 
 	def save(self, model_path:str):
 		# save the model
+		if not os.path.isdir(os.path.dirname(model_path)):
+			raise ValueError(f'{model_path} is not a valid path.')
 		torch.save(self.model.state_dict(), model_path)
+
+
+	def get_dataset_sizes(self):
+		return {'train':len(self.datasets['train']),
+				'val':len(self.datasets['val']),
+				'test':len(self.datasets['test'])}
 
 
 	class FireDataset(Dataset):

@@ -33,10 +33,6 @@ class TestScraper(unittest.TestCase):
 			self.scrpr.search_google_images(query='Dogs')
 		except:
 			self.fail(f'An error occurred searching Google Images... - {e}')
-		# check that 100 results are shared on first page
-		# (indicates that correct page is loaded)
-		img_elems = self.scrpr.wd.find_elements_by_css_selector('img.Q4LuWd')
-		self.assertEqual(len(img_elems), 100)
 
 
 	def test_scrape_google_images(self):

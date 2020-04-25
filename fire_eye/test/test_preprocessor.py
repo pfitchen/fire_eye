@@ -12,9 +12,10 @@ class TestPreprocessor(unittest.TestCase):
 		test_data_path = os.path.join(os.getcwd(), 'data',
 									  'test_preprocessor_data')
 		preprocessed_path = os.path.join(test_data_path, 'test_preprocessed')
-		# ensure preprocessed_path exists
-		if not os.path.isdir(preprocessed_path):
-			os.mkdir(preprocessed_path)
+		# ensure preprocessed_path is empty, but exists
+		if os.path.isdir(preprocessed_path):
+			shutil.rmtree(preprocessed_path)
+		os.mkdir(preprocessed_path)
 		# treat an exception as a failure rather than crashing
 		try:
 			prep = Preprocessor(preprocessed_path=preprocessed_path,

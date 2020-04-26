@@ -25,14 +25,28 @@ test-verbose:
 	$(PYTHON) -m unittest discover
 
 
-# finish up/fix... This only removes from top level
+# remove __pycache__ compiled files from fire_eye/
+clean:
+	$(FIND) fire_eye -name '*.pyc' -delete
+
+
+# empty scraped data dir
+clean-scraped:
+	$(RM) -rf ./data/scraped/*
+
+
+# empty preprocessed data dir
+clean-preprocessed:
+	$(RM) -rf ./data/preprocessed/*
+
+
 # remove __pycache__ stuff from fire_eye/,
 # empty scraped data dir
 # empty preprocessed data dir
-clean:
+clean-all:
 	$(FIND) fire_eye -name '*.pyc' -delete
 	$(RM) -rf ./data/scraped/*
 	$(RM) -rf ./data/preprocessed/*
 
 
-.PHONY: init run test clean
+.PHONY: init run test test-verbose clean clean-scraped clean-preprocessed clean-all

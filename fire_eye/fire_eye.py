@@ -35,6 +35,14 @@ class FireEye():
 			for query in queries:
 				s.scrape_google_images(num_images=num_images, query=query,
 									   download_path=self.download_path)
+		# pos_paths = [os.path.join(self.download_path, pos_query)
+		# 			 for pos_query in pos_queries]
+		# neg_paths = [os.path.join(self.download_path, neg_query)
+		# 			 for neg_query in neg_queries]
+		# self.preprocessor.preprocess(pos_paths=pos_paths, neg_paths=neg_paths)
+
+
+	def load_scraped_data(self, pos_queries:list=[], neg_queries:list=[]):
 		pos_paths = [os.path.join(self.download_path, pos_query)
 					 for pos_query in pos_queries]
 		neg_paths = [os.path.join(self.download_path, neg_query)
@@ -56,10 +64,13 @@ class FireEye():
 	def get_dataset_sizes(self):
 		total_size = len(os.listdir(self.pos_data_path)) +\
 					 len(os.listdir(self.neg_data_path))
+		train_size = int(0.6*total_size)
+		val_size = int(0.2*total_size)
+		test_size = total_size - train_size - val_size
 		return {'total':total_size,
-				'train':int(round(0.6*total_size)),
-				'val':int(round(0.2*total_size)),
-				'test':int(round(0.2*total_size))}
+				'train':train_size,
+				'val':val_size,
+				'test':test_size}
 
 
 	def train_model(self, num_epochs:int):
@@ -70,12 +81,12 @@ class FireEye():
 		return self.classifier.train(num_epochs=num_epochs)
 
 
-	def evaluate_model(self):
+	def evaluate_model(self, title_prefix:str=''):
 		if self.classifier is None:
 			self.classifier = Classifier(pos_data_path=self.pos_data_path,
 										 neg_data_path=self.neg_data_path,
 										 transform = self.transform)
-		return self.classifier.evaluate()
+		return self.classifier.evaluate(title_prefix=title_prefix)
 
 
 	def save_model(self, fname:str):

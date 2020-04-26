@@ -34,7 +34,14 @@ class Classifier():
 			raise ValueError(f'Empty dataset!')
 
 		# split the dataset into 60% train, 20% validation, and 20% test
-		dataset_split = [int(perc*len(dataset)) for perc in [0.6, 0.2, 0.2]]
+		total_dataset_size = len(dataset)
+		train_dataset_size = int(0.6*total_dataset_size)
+		val_dataset_size = int(0.2*total_dataset_size)
+		test_dataset_size = total_dataset_size - train_dataset_size \
+							- val_dataset_size
+		dataset_split = [train_dataset_size,
+						 val_dataset_size,
+						 test_dataset_size]
 		train_dataset, test_dataset, valid_dataset = \
 						torch.utils.data.random_split(dataset, dataset_split)
 
@@ -195,7 +202,7 @@ class Classifier():
 	# Calculates rate of false positives and negatives, i.e. confusion.
 	# Will run on a GPU if possible.
 	# Returns two figures: confusion bar plot and array of classified images.
-	def evaluate(self, num_images:int=16):
+	def evaluate(self, num_images:int=16, title_prefix:str=''):
 		device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 		self.model = self.model.to(device)
 		criterion = nn.CrossEntropyLoss()
@@ -246,7 +253,7 @@ class Classifier():
 			plt.legend(['Correct', 'Wrong'], loc='upper right')
 			plt.xticks([0.25, 0.5], ('No Fire', 'Fire'))
 			plt.xlim((0, 0.75))
-			plt.title('Model Confusion')
+			plt.title(title_prefix + 'Model Confusion')
 			plt.ylabel('%')
 
 		print(f'False Positive Rate: {percent_wrong_per_label[0]}%')
@@ -260,6 +267,7 @@ class Classifier():
 		with torch.no_grad():
 			with plt.style.context('seaborn'):
 				fig2 = plt.figure()
+				plt.title(title_prefix + 'Example Classifications')
 				for i, (inputs, labels) in enumerate(self.dataloaders['test']):
 					inputs = inputs.to(device)
 					labels = labels.to(device)
@@ -328,7 +336,7 @@ class Classifier():
 
 
 		def __len__(self):
-			return len(self.img_names)
+			return len(self.y)
 
 
 		def __str__(self):

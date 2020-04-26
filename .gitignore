@@ -1,11 +1,12 @@
 *.DS_Store
 venv/
-data/
+data/kaggle_data/
+data/models/
+data/preprocessed/
+data/scraped/
 docs/
 *.pdf
-*.png
-*.jpg
-*.jpeg
 *.icloud
 *__pycache__
 *.pyc
+*.ipynb*
